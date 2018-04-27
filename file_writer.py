@@ -6,7 +6,7 @@ class file_writer:
         self.file = open("fname", "w+") # read and write
 
     def __repr__(self):
-        return self.files
+        return self.file
         #TODO: code to return all data in document so far
 
     #method for encoding Python data to JSON
@@ -28,5 +28,11 @@ class file_writer:
 
     #method for getting last line of file
     def read_last_line(self, want_decoded=False):
+        all_lines = self.file.readlines()
         if want_decoded == True:
-            return
+            last_line = self.decode_json(all_lines[len(all_lines)-1])
+            return last_line
+        else:
+            last_line = all_lines[len(all_lines)-1]
+            return last_line
+
