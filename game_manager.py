@@ -1,6 +1,8 @@
 import json as JSON
 from pprint import pprint
 import os.path
+import glob
+import os
 # class for writing to/from files for communication between AI's
 class game_manager:
     def __init__(self, fname):
@@ -69,3 +71,11 @@ class game_manager:
             AI_1.goes_first = True
             AI_2.goes_first = False
             return [data, data]
+
+    # display available AI's
+    def print_AIs(self):
+        os.chdir("AI")
+        for file in glob.glob("*.py"):
+            print(file[:-3])
+        loops = int(input("How many rounds would you like to start?"))
+        os.chdir("..")
