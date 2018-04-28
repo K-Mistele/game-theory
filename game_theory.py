@@ -6,12 +6,12 @@
 + store each class in a separate file
 """
 import json
-from file_writer import file_writer
+from game_manager import game_manager
 from random import randint
 from pprint import pprint
 # For guide to Python with JSON, see http://docs.python-guide.org/en/latest/scenarios/json/
 name = "random_v_random" #TODO: will later be determined by which AI's are engaged, hard-coded for now
-json_manager = file_writer(name)
+json_manager = game_manager(name)
 
 #"Game" Loop
 loops = int(input("How many rounds would you like to start?"))

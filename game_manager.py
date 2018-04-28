@@ -2,7 +2,7 @@ import json as JSON
 from pprint import pprint
 import os.path
 # class for writing to/from files for communication between AI's
-class file_writer:
+class game_manager:
     def __init__(self, fname):
         self.fname = f"{fname}.json"
 
@@ -57,3 +57,15 @@ class file_writer:
         last_game = data[len(data)-1]
         return last_game
 
+    def process_data(self, AI_1, AI_2, data):
+        if AI_1.goes_first == True and AI_2.goes_first == False:
+            return [data, data] # data for first AI, and for second
+        elif AI_1.goes_first == False and AI_2.goes_first == True:
+            data2 = data[:]
+            for game in data2:
+                game.reverse() # reverse order
+            return [data2, data]
+        else: # if AI's can't agree which goes first, assign order
+            AI_1.goes_first = True
+            AI_2.goes_first = False
+            return [data, data]
