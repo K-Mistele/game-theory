@@ -1,2 +1,2 @@
-# salamander-theory.io
+# quantum-salamander
 A Python repository for exploring outcomes and behaviors related to game theory and the prisoner's dilemma
