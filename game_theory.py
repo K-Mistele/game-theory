@@ -12,10 +12,10 @@ from pprint import pprint
 
 # For guide to Python with JSON, see http://docs.python-guide.org/en/latest/scenarios/json/
 name = "random_v_random" #TODO: will later be determined by which AI's are engaged, hard-coded for now
-game_manager = game_manager(name)
+manager = game_manager()
 
 #"Game" Loop
-game_manager.print_AIs()
+manager.print_AIs()
 
 loops = int(input("How many games would you like to run?"))
 for i in range(0, loops):
