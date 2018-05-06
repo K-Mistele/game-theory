@@ -4,12 +4,6 @@ class Eve():
     gender = "female"
     name = "Eve"
 
-    def __init__(self, goes_first=True):
-        self.score = 0
-        self.goes_first = goes_first
-
-
-
     def first_turn(self):
         return "cooperate"
 
