@@ -1,6 +1,6 @@
 class George:
 
-    behavior_string = "Competes until enemy starts consistently cooperating"
+    behavior_string = "Competes until enemy starts consistently competing"
     gender = "male"
     name = "George"
 
@@ -16,8 +16,8 @@ class George:
             except:
                 last_three_games = [data[-1]]
 
-        if (last_three_games.count(["cooperate", "compete"]) +
-            last_three_games.count(["compete", "cooperate"]) == len(last_three_games) ):
+        if (last_three_games.count(["compete", "compete"]) +
+            last_three_games.count(["cooperate", "compete"]) >= 2): # if opponent is competing
             return "cooperate"
         else:
             return "compete"

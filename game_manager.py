@@ -110,7 +110,7 @@ class game_manager:
                 old_data = self.json_manager.get_data()
                 old_data = old_data["game_outcomes"]
                 game_results = [self.first_AI.take_turn(old_data),
-                                self.second_AI.take_turn(old_data)]
+                                self.second_AI.take_turn(old_data.reverse())] # give AI data with its own responses first
 
             # parse game results into outcome code
             parsed_results = self.parse_game_results(game_results)
