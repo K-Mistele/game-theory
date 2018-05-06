@@ -1,8 +1,4 @@
 {
   "game_outcomes": [],
-  "first_AI": "",
-  "second_AI": "",
-  "game_rounds": 0,
-  "first_AI_score": 0,
-  "second_AI_score": 0
+  "game_rounds": 0
 }

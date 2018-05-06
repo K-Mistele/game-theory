@@ -1,18 +1,22 @@
 # import sub-managers
 from json_manager import json_manager
 from scores_manager import scores_manager
+import importlib
 
 #import modules
 import glob
 import os
+import inspect
 import json as JSON
+from pprint import pprint
 
 class game_manager:
     def __init__(self):
-        self.select_AIs()
-        self.json_manager = json_manager(f"{self.first_AI.name}_v_{self.second_AI.name}")
-        self.scores_manager = scores_manager(self.first_AI, self.second_AI)
         self.available_AIs = []
+        self.select_AIs()
+        self.json_manager = json_manager(f"{self.first_AI.name}_v_{self.second_AI.name}", self.first_AI, self.second_AI)
+        self.scores_manager = scores_manager(self.first_AI, self.second_AI)
+
 
         #get points from decision matrix
         with open("decision_matrix.json", "r") as json_file:
@@ -40,24 +44,30 @@ class game_manager:
 
     def select_AIs(self):
         self.print_AIs()
+        print("(Note: AI's currently are not able to compete with themselves.)")
         while True:
-            first_AI = input("Please select an AI to run:  ")
+            first_AI = input("Please select a valid AI to run:  ")
             if first_AI in self.available_AIs:
 
                 #import class for AI based on name
-                AI_module = __import__(first_AI)
+
+                # os.chdir("AI")
+                # os.system("cd")
+
+                AI_module = importlib.import_module(f"AI.{first_AI}")
                 AI_class = getattr(AI_module, first_AI)
+                pprint(AI_module)
+                pprint(AI_class)
                 self.first_AI = AI_class()
-                self.first_AI_path = f"{self.first_AI}.py"
                 break
             else:
                 continue
         while True:
-            second_AI = input("Please select an AI for it to compete with:  ")
-            if second_AI in self.available_AIs:
+            second_AI = input("Please select a valid AI for it to compete with:  ")
+            if second_AI in self.available_AIs and second_AI != self.first_AI.name:
 
                 # import class for AI based on name
-                AI_module = __import__(second_AI)
+                AI_module =importlib.import_module(f"AI.{second_AI}")
                 AI_class = getattr(AI_module, second_AI)
                 self.second_AI = AI_class()
                 break
@@ -73,10 +83,10 @@ class game_manager:
             outcome_1 = 200 # outcome state 2 for competition
             outcome_2 = 200
         elif results == ["compete", "cooperate"]:
-            outcome_1 = 300 # outcome state for 2nd AI victory
+            outcome_1 = 300 # outcome state for 1st AI victory
             outcome_2 = 400
         elif results == ["cooperate", "compete"]:
-            outcome_1 = 400 # outcome state for 1st AI victory
+            outcome_1 = 400 # outcome state for 2nd AI victory
             outcome_2 = 300
         else:
             outcome_1 = 999 # error state
@@ -87,25 +97,54 @@ class game_manager:
 
         for i in range(0, self.get_loops()):
             # if first turn,each AI will exercise first turn behavior
+
             if i == 0:
                 game_results = [self.first_AI.first_turn(),
                                 self.second_AI.first_turn()]
 
+
             # otherwise, each AI will exercise normal behavior
             else:
-                game_results = [self.first_AI.take_turn(),
-                                self.second_AI.take_turn()]
+                # data from past games to make decisions beased off of.
+
+                old_data = self.json_manager.get_data()
+                old_data = old_data["game_outcomes"]
+                game_results = [self.first_AI.take_turn(old_data),
+                                self.second_AI.take_turn(old_data)]
 
             # parse game results into outcome code
-            parsed_results = self.parse_game_results((game_results))
+            parsed_results = self.parse_game_results(game_results)
 
             #determine score for each AI
-            first_AI_outcome = parsed_results[0]
-            second_AI_outcome = parsed_results[1]
+            self.first_AI.outcome = parsed_results[0]
+            self.second_AI.outcome = parsed_results[1]
 
+            # get data
             data = self.json_manager.get_data()
+
+            # upate data with info from game round
             data["game_rounds"] += 1
             data["game_outcomes"].append(game_results)
+
+            # game meta data
+            if parsed_results == [100, 100]: # if both cooperated
+                data["game_meta_data"]["cooperated"] += 1
+            elif parsed_results == [200, 200]:
+                data["game_meta_data"]["competed"] += 1
+            elif parsed_results == [400, 300]:
+                data["game_meta_data"][f"{self.first_AI.name} won"] += 1
+            elif parsed_results == [300, 400]:
+                data["game_meta_data"][f"{self.second_AI.name} won"] += 1
+
+            #update local scores
+            data["scores"][self.first_AI.name] += self.points[f"{parsed_results[0]}"]
+            data["scores"][self.second_AI.name] += self.points[f"{parsed_results[1]}"]
+
+            #update global scores
+            self.scores_manager.update_global_scores(self.points[f"{parsed_results[0]}"], self.points[f"{parsed_results[1]}"])
+
+            # save data to game file
             self.json_manager.write_to_file(data)
+
 
 
