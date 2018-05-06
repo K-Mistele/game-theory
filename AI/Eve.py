@@ -2,6 +2,7 @@ class Eve():
 
     behavior_string = "Very cooperative, and has faith in other people"
     gender = "female"
+    name = "Eve"
 
     def __init__(self, goes_first=True):
         self.score = 0
