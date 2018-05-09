@@ -24,12 +24,19 @@ class game_manager:
             self.points = data
 
     def print_AIs(self):
+        with open("build_data.json", "r") as build_file:
+            build_data = JSON.load(build_file)
+        self.available_AIs = []
+
         print("Available AI's: ")
-        os.chdir("AI")
-        for file in glob.glob("*.py"):
-            print(file[:-3])
-            self.available_AIs.append(file[:-3])
-        os.chdir("..")
+        for key in build_data:
+            self.available_AIs.append(build_data[key]["name"]) # add AI to availabe AI's
+            print(f"    {build_data[key]['name']} ({build_data[key]['gender']})\n      {build_data[key]['behavior']}\n")
+        # os.chdir("AI")
+        # for file in glob.glob("*.py"):
+        #     print(file[:-3])
+        #     self.available_AIs.append(file[:-3])
+        # os.chdir("..")
 
 
     def get_loops(self):
@@ -145,6 +152,3 @@ class game_manager:
 
             # save data to game file
             self.json_manager.write_to_file(data)
-
-
-
