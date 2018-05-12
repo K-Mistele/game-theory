@@ -19,12 +19,12 @@ class game_manager:
 
 
         #get points from decision matrix
-        with open("decision_matrix.json", "r") as json_file:
+        with open("json/decision_matrix.json", "r") as json_file:
             data = JSON.load(json_file)
             self.points = data
 
     def print_AIs(self):
-        with open("build_data.json", "r") as build_file:
+        with open("json/build_data.json", "r") as build_file:
             build_data = JSON.load(build_file)
         self.available_AIs = []
 
@@ -115,9 +115,10 @@ class game_manager:
                 # data from past games to make decisions beased off of.
 
                 old_data = self.json_manager.get_data()
-                old_data = old_data["game_outcomes"]
-                game_results = [self.first_AI.take_turn(old_data),
-                                self.second_AI.take_turn(old_data.reverse())] # give AI data with its own responses first
+                game_data = old_data["game_outcomes"]
+                game_results = [self.first_AI.take_turn(game_data),
+                                self.second_AI.take_turn([item.reverse() for item in game_data])] # give AI data with its own responses first
+                #TODO: reverse each item in list not the list itself!!!
 
             # parse game results into outcome code
             parsed_results = self.parse_game_results(game_results)
