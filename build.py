@@ -25,7 +25,8 @@ class build:
                                         "gender": AI.gender,
                                         "behavior": AI.behavior_string}
         # + dump that data to a json file
-        with open("build_data.json", "w") as build_file:
+        with open("json/build_data.json", "w") as build_file:
             JSON.dump(build_data, build_file)
+        print("Build Complete.")
 
 new_build = build()

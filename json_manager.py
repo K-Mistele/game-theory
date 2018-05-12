@@ -7,10 +7,10 @@ import os
 # class for writing to/from files for communication between AI's
 class json_manager:
     def __init__(self, fname, first_AI, second_AI):
-        self.fname = f"{fname}.json"
+        self.fname = f"json/{fname}.json"
 
         # open template and storage file
-        with open("game_template.json", "r") as template:
+        with open("json/game_template.json", "r") as template:
             self.template_data = JSON.load(template)
 
         # if creating file from template, add relevant attributes
