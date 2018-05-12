@@ -52,7 +52,7 @@ class build:
         clear_game_data = input("Clear game data?  ")
         clear_scores = input("Clear all scores?  ")
 
-        if clear_game_data:
+        if clear_game_data in "yes":
             # clear past games
             os.chdir("json/games")
             for file in glob.glob(".json"):
@@ -62,7 +62,7 @@ class build:
             os.chdir("..")
             os.chdir("..")
 
-        if clear_scores:
+        if clear_scores in "yes":
             # reset score data to empty
             os.chdir("json")
             empty = {}

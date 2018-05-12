@@ -5,8 +5,7 @@
 + need a score board/record-keeping system
 + store each class in a separate file
 """
-from game_manager import game_manager
-from random import randint
+from managers.game_manager import game_manager
 from pprint import pprint
 
 # For guide to Python with JSON, see http://docs.python-guide.org/en/latest/scenarios/json/

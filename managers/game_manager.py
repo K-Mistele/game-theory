@@ -1,12 +1,9 @@
 # import sub-managers
-from json_manager import json_manager
-from scores_manager import scores_manager
+from managers.json_manager import json_manager
+from managers.scores_manager import scores_manager
 import importlib
 
 #import modules
-import glob
-import os
-import inspect
 import json as JSON
 from pprint import pprint
 
