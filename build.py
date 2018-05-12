@@ -56,6 +56,7 @@ class build:
             # clear past games
             os.chdir("json/games")
             for file in glob.glob(".json"):
+                print(f"deleted {file}")
                 os.remove(file)
 
             #go back up two directories to main
