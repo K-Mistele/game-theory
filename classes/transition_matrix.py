@@ -1,4 +1,4 @@
-class decision_matrix:
+class transition_matrix:
 
     def __init__(self, probabilities=((1,0),(1,0))):
         self.matrix = {
