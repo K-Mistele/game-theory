@@ -11,7 +11,8 @@ class transition_matrix:
                 "compete": probabilities[1][1]
             }
         }
-    def get_decision(self, state):
+    def get_decision(self, data):
+        state = data[-1][1]
         if state == "cooperate" or state == "compete":
             for key in self.matrix[state]:
                 #iterate through keys and whichever one has a probability of 1 is returned
