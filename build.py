@@ -54,14 +54,15 @@ class build:
 
         if clear_game_data in "yes":
             # clear past games
-            os.chdir("json/games")
-            for file in glob.glob(".json"):
-                print(f"deleted {file}")
-                os.remove(file)
+            if os.path.isdir("json/games"):
+                os.chdir("json/games")
+                for file in glob.glob("*.json"):
+                    print(f"deleted {file}")
+                    os.remove(file)
 
             #go back up two directories to main
-            os.chdir("..")
-            os.chdir("..")
+                os.chdir("..")
+                os.chdir("..")
 
         if clear_scores in "yes":
             # reset score data to empty
