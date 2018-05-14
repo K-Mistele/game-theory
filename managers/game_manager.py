@@ -8,18 +8,30 @@ import json as JSON
 from pprint import pprint
 
 class game_manager:
-    def __init__(self):
-        self.available_AIs = []
-        self.select_AIs()
+    def __init__(self, autorun=False, AIs=(None, None), preset_loops=None):
+
+        #if user, have them select AIs
+        if autorun == False:
+            self.available_AIs = []
+            self.select_AIs()
+
+        #if autorun, get specified AIs
+        else:
+            self.get_specified_Ais(AIs[0], AIs[1])
+
+        #set up managers
         self.json_manager = json_manager(f"{self.first_AI.name}_v_{self.second_AI.name}", self.first_AI, self.second_AI)
         self.scores_manager = scores_manager(self.first_AI, self.second_AI)
 
+        # if autorun, use preset number of loops
+        self.preset_loops = preset_loops
 
         #get points from decision matrix
         with open("json/decision_matrix.json", "r") as json_file:
             data = JSON.load(json_file)
             self.points = data
 
+    # print available AIs
     def print_AIs(self):
         with open("json/build_data.json", "r") as build_file:
             build_data = JSON.load(build_file)
@@ -29,23 +41,25 @@ class game_manager:
         for key in build_data:
             self.available_AIs.append(build_data[key]["name"]) # add AI to availabe AI's
             print(f"    {build_data[key]['name']} ({build_data[key]['gender']})\n      {build_data[key]['behavior']}\n")
-        # os.chdir("AI")
-        # for file in glob.glob("*.py"):
-        #     print(file[:-3])
-        #     self.available_AIs.append(file[:-3])
-        # os.chdir("..")
 
-
+    # get number of loops to run
     def get_loops(self):
-        while True:
-            try:
-                loops = int(input("How many games would you like to run?"))
-                break
-            except:
-                continue
-        self.num_loops = loops
+        #if autorun, use preset number of loops
+        if self.preset_loops != None:
+            self.num_loops = self.preset_loops
+
+        #otherwise, prompt user
+        else:
+            while True:
+                try:
+                    loops = int(input("How many games would you like to run?"))
+                    break
+                except:
+                    continue
+            self.num_loops = loops
         return loops
 
+    # have player select AIs to run
     def select_AIs(self):
         self.print_AIs()
         print("(Note: AI's currently are not able to compete with themselves.)")
@@ -60,8 +74,6 @@ class game_manager:
 
                 AI_module = importlib.import_module(f"AI.{first_AI}")
                 AI_class = getattr(AI_module, first_AI)
-                pprint(AI_module)
-                pprint(AI_class)
                 self.first_AI = AI_class()
                 break
             else:
@@ -78,6 +90,19 @@ class game_manager:
             else:
                 continue
 
+    # grab pre-set AI's NOTE: for autorun mode ONLY
+    def get_specified_Ais(self, AI_1, AI_2):
+        #grab first Ai
+        AI_1_module = importlib.import_module(f"AI.{AI_1}")
+        AI_1_class = getattr(AI_1_module, AI_1)
+        self.first_AI = AI_1_class()
+
+        #grab second AI
+        AI_2_module = importlib.import_module(f"AI.{AI_2}")
+        AI_2_class = getattr(AI_2_module, AI_2)
+        self.second_AI = AI_2_class()
+
+    #parse results of game into outcome state codes used for scoring
     def parse_game_results(self, results):
         #NOTE: game_results should be a list of two items where each is either "cooperate" or "compete"
         if results == ["cooperate", "cooperate"]:
@@ -97,6 +122,7 @@ class game_manager:
             outcome_2 = 999
         return [outcome_1, outcome_2]
 
+    # the main game loop
     def game_loop(self):
 
         for i in range(0, self.get_loops()):
