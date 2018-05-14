@@ -46,7 +46,7 @@ class game_manager:
     def get_loops(self):
         #if autorun, use preset number of loops
         if self.preset_loops != None:
-            self.num_loops = self.preset_loops
+            loops = self.preset_loops
 
         #otherwise, prompt user
         else:
@@ -56,7 +56,6 @@ class game_manager:
                     break
                 except:
                     continue
-            self.num_loops = loops
         return loops
 
     # have player select AIs to run
