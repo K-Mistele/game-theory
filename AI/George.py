@@ -1,3 +1,4 @@
+from classes.transition_matrix import transition_matrix
 class George:
 
     behavior_string = "Competes until enemy starts consistently competing"

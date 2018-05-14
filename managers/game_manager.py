@@ -114,7 +114,7 @@ class game_manager:
                 old_data = self.json_manager.get_data()
                 game_data = old_data["game_outcomes"]
                 game_results = [self.first_AI.take_turn(game_data),
-                                self.second_AI.take_turn([item.reverse() for item in game_data])] # give AI data with its own responses first
+                                self.second_AI.take_turn([item[::-1] for item in game_data])] # give AI data with its own responses first
                 #TODO: reverse each item in list not the list itself!!!
 
             # parse game results into outcome code

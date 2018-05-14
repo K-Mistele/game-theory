@@ -1,3 +1,4 @@
+from classes.transition_matrix import transition_matrix
 class Eve():
 
     behavior_string = "Very cooperative, and has faith in other people"
@@ -23,6 +24,3 @@ class Eve():
             return "cooperate"
         else:
             return "compete"
-
-
-
