@@ -10,4 +10,4 @@ class Steve:
         return "cooperate"
 
     def take_turn(self, data=()):
-        self.matrix.get_decision((data))
+        return self.matrix.get_decision(data)
