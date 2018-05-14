@@ -5,6 +5,7 @@ class Steve:
     gender = "male"
     name = "Steve"
     matrix = transition_matrix(((1,0), (0,1)))
+
     def first_turn(self):
         return "cooperate"
 

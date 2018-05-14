@@ -1,3 +1,4 @@
+from classes.transition_matrix import transition_matrix
 from random import randint
 class Alice():
 
@@ -19,6 +20,3 @@ class Alice():
             return "cooperate"
         else:
             return "compete"
-
-
-
