@@ -8,8 +8,10 @@ import json as JSON
 from pprint import pprint
 
 class game_manager:
-    def __init__(self, autorun=False, AIs=(None, None), preset_loops=None):
+    def __init__(self, autorun=False, AIs=(None, None), preset_loops=None, verbose=False):
 
+        # verbose output?
+        self.verbose = verbose
         #if user, have them select AIs
         if autorun == False:
             self.available_AIs = []
@@ -31,6 +33,12 @@ class game_manager:
             data = JSON.load(json_file)
             self.points = data
 
+        #verbose output
+        if self.verbose:
+            print("***************************************************************************************************")
+            pprint(f"{self.first_AI.name}_v_{self.second_AI.name}")
+            print("Begin game:")
+            print("***************************************************************************************************")
     # print available AIs
     def print_AIs(self):
         with open("json/build_data.json", "r") as build_file:
@@ -142,6 +150,9 @@ class game_manager:
                                 self.second_AI.take_turn([item[::-1] for item in game_data])] # give AI data with its own responses first
                 #TODO: reverse each item in list not the list itself!!!
 
+            #if verbose, display verbose output
+            if self.verbose:
+                print(f"{self.first_AI.name}: {game_results[0]}  |  {self.second_AI.name}: {game_results[1]}")
             # parse game results into outcome code
             parsed_results = self.parse_game_results(game_results)
 
@@ -169,6 +180,10 @@ class game_manager:
             #update local scores
             data["scores"][self.first_AI.name] += self.points[f"{parsed_results[0]}"]
             data["scores"][self.second_AI.name] += self.points[f"{parsed_results[1]}"]
+
+            #if verbose, display verbose output
+            if self.verbose:
+                print(f"{self.first_AI.name}: {data['scores'][self.first_AI.name]}  |  {self.second_AI.name}: {data['scores'][self.second_AI.name]}")
 
             #update global scores
             self.scores_manager.update_global_scores(self.points[f"{parsed_results[0]}"], self.points[f"{parsed_results[1]}"])

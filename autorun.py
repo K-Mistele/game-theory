@@ -22,6 +22,13 @@ if user_input in "yes":
 else:
     quit()
 
+#verbose output?
+verbose_input = input("Display verbose output? (y/n)")
+if verbose_input in "yes":
+    verbose = True
+else:
+    verbose = False
+
 # get build data
 with open("json/build_data.json", "r") as build:
     build_data = JSON.load(build)
@@ -45,7 +52,7 @@ while True:
 # run games
 print(combinations)
 for combination in combinations:
-    manager = game_manager(True, combination, loops)
+    manager = game_manager(True, combination, loops, verbose)
     manager.game_loop()
 
 #TODO: analyze data and global scores
