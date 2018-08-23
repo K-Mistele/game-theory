@@ -1,7 +1,7 @@
 from classes.transition_matrix import transition_matrix
 class Jeeves:
 
-    behavior_string = "Very cooperative; loathes competition"
+    behavior_string = "Competes until the enemy ceases competing"
     gender = "male"
     name = "Jeeves"
     matrix = transition_matrix(((1,0), (1,0)))
